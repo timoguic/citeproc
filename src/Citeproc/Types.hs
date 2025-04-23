@@ -207,6 +207,7 @@ class (Semigroup a, Monoid a, Show a, Eq a, Ord a) => CiteprocOutput a where
   mapText                     :: (Text -> Text) -> a -> a
   addHyperlink                :: Text -> a -> a
   localizeQuotes              :: Locale -> a -> a
+  addVariableClass            :: Variable -> a -> a
 
 addFormatting :: CiteprocOutput a => Formatting -> a -> a
 addFormatting f x =
@@ -1531,6 +1532,9 @@ renderOutput opts (Tagged (TagItem itemtype ident) x)
   | linkCitations opts
   , itemtype /= AuthorOnly
   = addHyperlink ("#ref-" <> unItemId ident) $ renderOutput opts x
+-- added for semantic tagging
+renderOutput opts (Tagged (TagNames var _ _) x)
+  = addVariableClass var $ renderOutput opts x
 renderOutput opts (Tagged _ x) = renderOutput opts x
 renderOutput opts (Formatted f [Linked url xs])
   | linkBibliography opts
