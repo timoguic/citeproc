@@ -22,53 +22,7 @@ import Data.Functor.Reverse
 import Data.Char (isSpace, isPunctuation, isAlphaNum)
 import qualified Data.CaseInsensitive as CI (original)
 
--- Helper functions for semantic tagging
-addSemanticClass :: Text -> Inlines -> Inlines
-addSemanticClass cls = B.spanWith ("", [cls], [])
 
--- Map variables to semantic classes
-variableToClass :: Variable -> Text
-variableToClass var = 
-  case fromVariable var of
-    "author" -> "author"
-    "editor" -> "editor"
-    "translator" -> "translator"
-    "title" -> "title"
-    "collection-title" -> "collection-title"
-    "collection-number" -> "collection-number"
-    "container-title" -> "container-title"
-    "journal-title" -> "journal-title"
-    "publisher" -> "publisher"
-    "publisher-place" -> "publisher-place"
-    "abstract" -> "abstract"
-    "DOI" -> "doi"
-    "ISBN" -> "isbn"
-    "ISSN" -> "issn"
-    "URL" -> "url"
-    "volume" -> "volume"
-    "issue" -> "issue"
-    "issued" -> "issued"
-    "page" -> "page"
-    "page-first" -> "page-first"
-    "page-last" -> "page-last"
-    "number-of-pages" -> "number-of-pages"
-    "number-of-volumes" -> "number-of-volumes"
-    "event" -> "event"
-    "event-place" -> "event-place"
-    "genre" -> "genre"
-    "medium" -> "medium"
-    "note" -> "note"
-    "original-title" -> "original-title"
-    "original-date" -> "original-date"
-    "original-publisher" -> "original-publisher"
-    "original-publisher-place" -> "original-publisher-place"
-    "series" -> "series"
-    "status" -> "status"
-    "year-suffix" -> "year-suffix"
-    "date" -> "date"
-    x -> x
-
-  
 instance CiteprocOutput Inlines where
   toText                = stringify
   fromText t            = (if " " `T.isPrefixOf` t
@@ -126,7 +80,7 @@ instance CiteprocOutput Inlines where
           go x       = x
   addHyperlink t        = B.link t ""
   localizeQuotes        = convertQuotes
-  addVariableClass var  = addSemanticClass (variableToClass var)
+  addVariableClass var  = B.spanWith ("", [fromVariable var], [])
 
 -- localized quotes
 convertQuotes :: Locale -> Inlines -> Inlines
