@@ -65,7 +65,8 @@ variableToClass var =
     "series" -> "series"
     "status" -> "status"
     "year-suffix" -> "year-suffix"
-    _ -> "other"
+    "date" -> "date"
+    x -> x
 
   
 instance CiteprocOutput Inlines where

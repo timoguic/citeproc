@@ -1634,12 +1634,8 @@ eText (TextVariable varForm v) = do
                                $ mbAbbrevs >>= lookupAbbreviation v val
                   else askVariable v
         res <- case mbv of
-                 Just (TextVal x)
-                   | v == "page" -> pageRange x
-                   | otherwise   -> return $ Tagged (TagNames v (NamesFormat Nothing Nothing Nothing False) []) $ Literal $ fromText x
-                 Just (FancyVal x)
-                   | v == "page" -> pageRange (toText x)
-                   | otherwise   -> return $ Tagged (TagNames v (NamesFormat Nothing Nothing Nothing False) []) $ Literal x
+                 Just (TextVal x) -> return $ Tagged (TagNames v (NamesFormat Nothing Nothing Nothing False) []) $ Literal $ fromText x
+                 Just (FancyVal x) -> return $ Tagged (TagNames v (NamesFormat Nothing Nothing Nothing False) []) $ Literal x
                  Just (NumVal x) -> return $ Tagged (TagNames v (NamesFormat Nothing Nothing Nothing False) []) $ Literal
                                            $ fromText (T.pack (show x))
                  _ -> return NullOutput               

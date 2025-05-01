@@ -1535,6 +1535,9 @@ renderOutput opts (Tagged (TagItem itemtype ident) x)
 -- added for semantic tagging
 renderOutput opts (Tagged (TagNames var _ _) x)
   = addVariableClass var $ renderOutput opts x
+-- added for semantic tagging of dates
+renderOutput opts (Tagged (TagDate date) x)
+  = addVariableClass "date" $ renderOutput opts x
 renderOutput opts (Tagged _ x) = renderOutput opts x
 renderOutput opts (Formatted f [Linked url xs])
   | linkBibliography opts
